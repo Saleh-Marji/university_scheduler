@@ -6,7 +6,6 @@ import 'package:university_scheduler/constants.dart';
 import 'package:university_scheduler/screens/course_details.dart';
 import 'package:university_scheduler/utils/utils.dart';
 import 'package:university_scheduler/widgets/common_widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../modals/course.dart';
 import '../widgets/app_drawer.dart';
@@ -41,10 +40,6 @@ class _UpcomingCourseWidgetState extends State<_UpcomingCourseWidget> {
   @override
   void initState() {
     super.initState();
-    var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
     timer = Timer.periodic(Duration(seconds: 30), (timer) {
       setState(() {
         dayAndCourse = Utils.getCurrentCourse();
