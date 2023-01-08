@@ -69,14 +69,14 @@ class CourseInfoScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 2),
+                  margin: const EdgeInsets.only(top: 2),
                   child: Icon(
                     item.icon,
                     color: kColorBlue,
                     size: 30,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(
@@ -88,7 +88,7 @@ class CourseInfoScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(

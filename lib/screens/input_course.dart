@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:university_scheduler/constants.dart';
 import 'package:university_scheduler/modals/course.dart';
 import 'package:university_scheduler/utils/dialogs.dart';
@@ -135,6 +134,9 @@ class _InputCourseScreenState extends State<InputCourseScreen> {
                           endTime: endTime,
                         ),
                       );
+                      if (!mounted) {
+                        return;
+                      }
                       Navigator.pop(context, true);
                     }
                   }
@@ -163,17 +165,20 @@ class _InputCourseScreenState extends State<InputCourseScreen> {
                           endTime: endTime,
                         ),
                       );
+                      if (!mounted) {
+                        return;
+                      }
                       Navigator.pop(context, true);
                     }
                   },
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
           ),
         ],
       ),
       body: Form(
         child: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ...([
@@ -191,7 +196,7 @@ class _InputCourseScreenState extends State<InputCourseScreen> {
             StaticTextFormField(
               content: courseDays.isEmpty ? 'Click to Select Days' : Course.courseDaysToString(courseDays),
               label: 'Course Days',
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.calendar_month,
                 color: _colorOfScreenContent,
               ),
@@ -217,7 +222,7 @@ class _InputCourseScreenState extends State<InputCourseScreen> {
             StaticTextFormField(
               content: startTime.toString(),
               label: 'Start Time',
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.schedule,
                 color: _colorOfScreenContent,
               ),
@@ -233,7 +238,7 @@ class _InputCourseScreenState extends State<InputCourseScreen> {
             StaticTextFormField(
               content: endTime.toString(),
               label: 'End Time',
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.schedule,
                 color: _colorOfScreenContent,
               ),
@@ -258,7 +263,7 @@ Future<TimeOfDay?> _showTimePickerDialog(BuildContext context, Time initialTime)
     context: context,
     builder: (context) => Theme(
       data: ThemeData.light().copyWith(
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: _colorOfScreenContent,
         ),
       ),

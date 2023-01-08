@@ -14,9 +14,9 @@ class ContactInfoScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 'Emails:\nhbye58587@gmail.com\n10221003@mu.edu.lb',
                 style: kTextStyleMain,

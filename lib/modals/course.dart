@@ -45,6 +45,10 @@ class Course {
     return map;
   }
 
+  Duration getDurationOfCourse() {
+    return Time.getDurationBetweenTimes(startTime, endTime);
+  }
+
   @override
   String toString() {
     return '''
@@ -122,6 +126,10 @@ Course Days: ${courseDaysToString(courseDays)}''';
 📍  Location: $location''';
   }
 
+  String toNotificationString() {
+    return '$startTime - $endTime: $code, $name';
+  }
+
   String _getDaysJsonString() {
     String result = "";
     for (int i = 0; i < courseDays.length; i++) {
@@ -150,11 +158,28 @@ class Time {
 
   factory Time.fromString(String string) {
     return Time(
-        int.parse(string.substring(0, 2)), int.parse(string.substring(3, 5)), _stringToType(string.substring(6)));
+      int.parse(string.substring(0, 2)),
+      int.parse(string.substring(3, 5)),
+      _stringToType(string.substring(6)),
+    );
+  }
+
+  factory Time.fromStringWithoutType(String string) {
+    int hour = int.parse(string.substring(0, 2));
+    int minute = int.parse(string.substring(3, 5));
+    return Time(
+      getUnRealHour(hour),
+      minute,
+      getType(hour),
+    );
   }
 
   factory Time.fromTimeOfDay(TimeOfDay timeOfDay) {
     return Time(getUnRealHour(timeOfDay.hour), timeOfDay.minute, getType(timeOfDay.hour));
+  }
+
+  String toFormattedString() {
+    return '${_intToString(getRealHour())}:${_intToString(minute)}';
   }
 
   int compareTo(Time other) {
@@ -165,6 +190,22 @@ class Time {
     } else {
       return minute.compareTo(other.minute);
     }
+  }
+
+  int _toMinutesSince0() {
+    return (getRealHour() * 60) + minute;
+  }
+
+  static Duration _minutesToDuration(int minutes) {
+    return Duration(hours: (minutes / 60).floor(), minutes: minutes % 60);
+  }
+
+  static Duration getDurationBetweenTimes(Time t1, Time t2) {
+    int dif = t1.compareTo(t2);
+    if (dif >= 0) {
+      return Duration.zero;
+    }
+    return _minutesToDuration(t2._toMinutesSince0() - t1._toMinutesSince0());
   }
 
   @override
@@ -236,6 +277,19 @@ class Time {
     } else {
       return TimeType.pm;
     }
+  }
+
+  Time subtract(int minutesBeforeCourse) {
+    int hour = getRealHour();
+    int minutes = minute;
+    if (minutesBeforeCourse > minutes) {
+      if (hour == 1) {
+        return Time(0, 0, TimeType.am);
+      }
+      hour--;
+      minutes += 60;
+    }
+    return Time(getUnRealHour(hour), minutes - minutesBeforeCourse, getType(hour));
   }
 }
 

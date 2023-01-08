@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const kFontPrimary = 'QuickSand';
 
-Future get kRefreshIndicatorDelay => Future.delayed(Duration(milliseconds: 300));
+Future get kRefreshIndicatorDelay => Future.delayed(const Duration(milliseconds: 300));
 
 Widget get kNoCoursesCenteredText => const Padding(
       padding: EdgeInsets.all(16.0),

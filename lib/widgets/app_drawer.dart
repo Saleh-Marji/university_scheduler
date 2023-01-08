@@ -10,7 +10,7 @@ class AppDrawer extends StatelessWidget {
     return SafeArea(
       child: Container(
         width: 220,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: kColorYellow,
           borderRadius: BorderRadius.horizontal(
             right: Radius.circular(10),
@@ -20,31 +20,21 @@ class AppDrawer extends StatelessWidget {
           children: [
             Container(
               height: 210,
-              padding: EdgeInsets.all(30),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundColor: Colors.white,
-                  child: Image.asset('assets/images/logo.png'),
-                ),
-              ),
+              padding: const EdgeInsets.all(30),
+              child: Image.asset('assets/images/logo.png'),
             ),
-            DrawerDivider(
+            const DrawerDivider(
               margins: EdgeInsets.zero,
             ),
             ..._getActions(),
             //Expanded(child: SizedBox()),
-            DrawerDivider(),
-            Text(
+            const DrawerDivider(),
+            const Text(
               'Made By\nSaleh Marji',
               textAlign: TextAlign.center,
               style: kTextStyleMain,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -63,7 +53,7 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
           ],
@@ -89,14 +79,14 @@ class AppDrawer extends StatelessWidget {
           destinationRoute: kScheduleRoute,
         ),
         OptionsButtonContent(
-          label: 'Manual',
-          icon: Icons.perm_device_info_rounded,
-          destinationRoute: kManualRoute,
-        ),
-        OptionsButtonContent(
           label: 'Settings',
           icon: Icons.settings,
           destinationRoute: kSettingsRoute,
+        ),
+        OptionsButtonContent(
+          label: 'Manual',
+          icon: Icons.perm_device_info_rounded,
+          destinationRoute: kManualRoute,
         ),
       ].map((e) => DrawerTile(content: e)).toList();
 }

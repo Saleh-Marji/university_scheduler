@@ -39,19 +39,19 @@ class _CoursesScreenState extends State<CoursesScreen> {
               await Utils.clearCourses();
               setState(() {});
             },
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             tooltip: 'Delete All',
           )
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kColorLightBlue,
         onPressed: () async {
-          await Navigator.push(context, MaterialPageRoute(builder: (context) => InputCourseScreen()));
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const InputCourseScreen()));
           setState(() {});
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Utils.courses.isEmpty
           ? kNoCoursesCenteredText
@@ -87,7 +87,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     ),
                   );
                 } else if (index == courses.length + 1) {
-                  return SizedBox(
+                  return const SizedBox(
                     height: 80,
                   );
                 } else {
@@ -118,7 +118,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                             textAlign: TextAlign.start,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
@@ -138,7 +138,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) => CourseInfoScreen(course: course)));
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.info,
                                   color: kColorBlue,
                                 ),
@@ -160,7 +160,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                     setState(() {});
                                   }
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.edit,
                                   color: kColorBlue,
                                 ),

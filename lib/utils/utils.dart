@@ -1,13 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:university_scheduler/modals/start_and_end_time.dart';
+import 'package:university_scheduler/utils/settings.dart';
 
 import '../modals/course.dart';
+import '../modals/course_and_day.dart';
 
 class Utils {
-  static List<Course> _courses = [];
+  static final List<Course> _courses = [];
 
   static List<Course> get courses => [..._courses];
+
+  static void setTextForController(TextEditingController controller, String text) {
+    controller.text = text;
+    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+  }
 
   static List<Course> get coursesForSchedule {
     List<Course> result = [];
@@ -46,7 +55,6 @@ class Utils {
         result = aDay.index.compareTo(bDay.index);
       } else {
         result = a.startTime.compareTo(b.startTime);
-        print(result);
       }
       return result;
     });
@@ -67,7 +75,7 @@ class Utils {
     await saveCourses();
   }
 
-  static MapEntry<int, Course>? getCurrentCourse() {
+  static CourseAndDay? _getUpcomingCourse() {
     if (_courses.isEmpty) {
       return null;
     }
@@ -76,17 +84,7 @@ class Utils {
 
     now = DateTime(2023, 5, now.weekday, now.hour, now.minute);
 
-    if (_courses.length == 1) {
-      int resultDay = 1;
-      for (CourseDay day in _courses[0].courseDays) {
-        if ((day.index + 1) >= now.day) {
-          resultDay = day.index + 1;
-        }
-      }
-      return MapEntry(resultDay - 1, _courses[0]);
-    }
-
-    MapEntry<int, Course>? result;
+    CourseAndDay? result;
 
     List<CourseDateTime> dateTimes = [];
 
@@ -105,12 +103,65 @@ class Utils {
     dateTimes.sort((a, b) => a.dateTime.compareTo(b.dateTime));
     for (CourseDateTime value in dateTimes) {
       if (value.dateTime.isAfter(now)) {
-        result = MapEntry(value.dateTime.day - 1, _courses[value.index]);
+        result = CourseAndDay(day: value.dateTime.day - 1, course: _courses[value.index]);
         break;
       }
     }
-    result ??= MapEntry(dateTimes[0].dateTime.day - 1, _courses[dateTimes[0].index]);
+    result ??= CourseAndDay(day: dateTimes[0].dateTime.day - 1, course: _courses[dateTimes[0].index]);
 
+    return result;
+  }
+
+  static CourseAndDay? _getCurrentCourse() {
+    if (_courses.isEmpty) {
+      return null;
+    }
+
+    DateTime now = DateTime.now();
+
+    now = DateTime(2023, 5, now.weekday, now.hour, now.minute);
+
+    CourseAndDay? result;
+
+    List<CourseStartAndEndTime> times = [];
+
+    for (int i = 0; i < _courses.length; i++) {
+      Course course = _courses[i];
+      List<int> daysToAdd = course.courseDays.map((e) => (e.index + 1)).toList();
+      for (int day in daysToAdd) {
+        times.add(
+          CourseStartAndEndTime(
+            i,
+            StartAndEndTime(
+              startTime: DateTime(2023, 5, day, course.startTime.getRealHour(), course.startTime.minute),
+              endTime: DateTime(2023, 5, day, course.endTime.getRealHour(), course.endTime.minute + 1),
+            ),
+          ),
+        );
+      }
+
+      times.sort((a, b) => a.time.startTime.compareTo(b.time.startTime));
+      for (CourseStartAndEndTime value in times) {
+        if (now.isAfter(value.time.startTime) && value.time.endTime.isAfter(now)) {
+          result = CourseAndDay(day: value.time.startTime.day - 1, course: _courses[value.index]);
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  static Map<String, CourseAndDay> getToPresentCourses() {
+    Map<String, CourseAndDay> result = <String, CourseAndDay>{};
+    CourseAndDay? upcomingCourse = _getUpcomingCourse();
+    if (upcomingCourse != null) {
+      result['upcomingCourse'] = upcomingCourse;
+    }
+    CourseAndDay? currentCourse = _getCurrentCourse();
+    if (currentCourse != null) {
+      result['currentCourse'] = currentCourse;
+    }
     return result;
   }
 
@@ -134,6 +185,7 @@ class Utils {
       });
     }
     await file.writeAsString(jsonEncode(map));
+    await Settings.saveSettingsDefault();
     return true;
   }
 
@@ -163,4 +215,11 @@ class CourseDateTime {
   DateTime dateTime;
 
   CourseDateTime(this.index, this.dateTime);
+}
+
+class CourseStartAndEndTime {
+  int index;
+  StartAndEndTime time;
+
+  CourseStartAndEndTime(this.index, this.time);
 }

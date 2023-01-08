@@ -10,17 +10,17 @@ class ManualScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: wGetAppBar(title: 'Manual'),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: ListView(
-        children: _getTips(),
+        children: _tips,
       ),
     );
   }
 
-  List<Widget> _getTips() => [
+  List<Widget> get _tips => [
         _TipContent(
           'The Home Screen',
-          'The upcoming course is calculated every 30 seconds. If you wish to refresh slide the screen down',
+          'The upcoming and current courses are calculated every 30 seconds. If you wish to refresh slide the screen down',
         ),
         _TipContent(
           'View the Details of a Course',
@@ -66,6 +66,14 @@ class ManualScreen extends StatelessWidget {
           'Actions Are Undoable',
           'Note that any kind of removal of any course (removing a single course or removing all courses) or editing a course are not undoable',
         ),
+        _TipContent(
+          'Notifications Before Each Course',
+          'In the "Settings Screen", if you enable this option, the app will send a reminder notification before a certain duration (default 15 minutes), and you can set it by clicking on it and typing the duration you want',
+        ),
+        _TipContent(
+          'Summary Notifications',
+          'In the "Settings Screen", if you enable this option, the app will send a summary notification before each day having at least one course, which contains the information about all the courses you have in the next day',
+        ),
       ]
           .map((e) => Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -76,7 +84,7 @@ class ManualScreen extends StatelessWidget {
                       '-',
                       style: kTextStyleMain.copyWith(fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(

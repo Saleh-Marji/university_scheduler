@@ -7,7 +7,7 @@ import 'package:university_scheduler/screens/home.dart';
 import 'package:university_scheduler/screens/manual.dart';
 import 'package:university_scheduler/screens/schedule.dart';
 import 'package:university_scheduler/screens/settings.dart';
-import 'package:university_scheduler/test_screen.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +15,7 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
@@ -26,18 +27,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: TestScreen(),
-      //initialRoute: kHomeRoute,
+      initialRoute: kHomeRoute,
+      // home: TestScreen(),
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        kHomeRoute: (context) => HomeScreen(),
-        kCoursesRoute: (context) => CoursesScreen(),
-        kManualRoute: (context) => ManualScreen(),
-        kScheduleRoute: (context) => ScheduleScreen(),
-        kContactInfoRoute: (context) => ContactInfoScreen(),
+        kHomeRoute: (context) => const HomeScreen(),
+        kCoursesRoute: (context) => const CoursesScreen(),
+        kManualRoute: (context) => const ManualScreen(),
+        kScheduleRoute: (context) => const ScheduleScreen(),
+        kContactInfoRoute: (context) => const ContactInfoScreen(),
         kSettingsRoute: (context) => SettingsScreen(),
       },
     );

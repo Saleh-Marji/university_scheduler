@@ -69,15 +69,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   });
                 }
               },
-              icon: Icon(Icons.filter_alt)),
+              icon: const Icon(Icons.filter_alt)),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: FutureBuilder(
         future: dataGotten,
         builder: (data, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 color: kColorLightBlue,
               ),
@@ -96,7 +96,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     itemCount: courses.length + 1, //+ 1,
                     itemBuilder: (context, index) {
                       if (index == courses.length) {
-                        return SizedBox(
+                        return const SizedBox(
                           height: 24,
                         );
                       }
@@ -140,7 +140,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ...((index == 0 || course.courseDays[0] != courses[index - 1].courseDays[0])
                               ? [
                                   Container(
-                                    margin: EdgeInsets.only(top: 20, left: 10),
+                                    margin: const EdgeInsets.only(top: 20, left: 10),
                                     child: Text(
                                       '${Course.courseDayToFullString(course.courseDays[0])}:',
                                       style: kTextStyleMain.copyWith(
@@ -162,7 +162,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 Expanded(
@@ -184,7 +184,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) => CourseInfoScreen(course: course)));
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.info,
                                           color: kColorBlue,
                                         ),
@@ -222,11 +222,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    preferences.setBool('Mon', b[0]);
-    preferences.setBool('Tues', b[1]);
-    preferences.setBool('Wed', b[2]);
-    preferences.setBool('Thurs', b[3]);
-    preferences.setBool('Fri', b[4]);
+    await preferences.setBool('Mon', b[0]);
+    await preferences.setBool('Tues', b[1]);
+    await preferences.setBool('Wed', b[2]);
+    await preferences.setBool('Thurs', b[3]);
+    await preferences.setBool('Fri', b[4]);
   }
 }
 
