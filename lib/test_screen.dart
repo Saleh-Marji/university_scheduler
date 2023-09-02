@@ -19,16 +19,18 @@ class TestScreen extends StatelessWidget {
               android: AndroidInitializationSettings('splash'),
             ));
 
-            await plugin.zonedSchedule(
-              1,
-              'title',
-              'body',
-              tz.TZDateTime.from(DateTime.now().add(const Duration(seconds: 3)), tz.local),
-              const NotificationDetails(android: AndroidNotificationDetails('hello', 'bello')),
-              uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-              androidAllowWhileIdle: true,
-              matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-            );
+            await plugin.cancelAll();
+
+            // await plugin.zonedSchedule(
+            //   1,
+            //   'title',
+            //   'body',
+            //   tz.TZDateTime.from(DateTime.now().add(const Duration(seconds: 3)), tz.local),
+            //   const NotificationDetails(android: AndroidNotificationDetails('hello', 'bello')),
+            //   uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+            //   androidAllowWhileIdle: true,
+            //   matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+            // );
           },
           child: const Text('push notification'),
         ),

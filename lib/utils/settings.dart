@@ -22,7 +22,7 @@ class Settings {
       List<Course> courses = Utils.courses;
       if (settings.minutesBeforeCourse != null) {
         for (Course course in courses) {
-          await _showNotification(
+          await showNotification(
             title: '${course.name} Course Reminder',
             body:
                 'You have ${course.code} / ${course.name} in ${course.location} after ${settings.minutesBeforeCourse} minutes',
@@ -44,7 +44,7 @@ class Settings {
           }
         }
         for (MapEntry mapEntry in map.entries) {
-          await _showNotification(
+          await showNotification(
             title: 'Summary for Tomorrow',
             body: mapEntry.value,
             time: settings.timeAtNextDayOverview!,
@@ -71,7 +71,7 @@ class Settings {
 
   static int incrementId = 0;
 
-  static Future<void> _showNotification({
+  static Future<void> showNotification({
     required String title,
     required String body,
     required c.Time time,
@@ -125,7 +125,14 @@ class Settings {
   }
 
   static tz.TZDateTime _getDateTime(c.Time time, int day) {
-    DateTime finalDate = DateTime(2021, 2, day, time.getRealHour(), time.minute, 1);
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+
+    // Calculate the date for the first occurrence of the desired weekday in the specified month
+    tz.TZDateTime firstDayOfMonth = tz.TZDateTime(now.location, now.year - 1, now.month, 1, time.getRealHour(), time.minute, 1);
+
+    // Calculate the difference in days between the desired weekday and the first day of the month
+    int dayDifference = (day - firstDayOfMonth.weekday + 7) % 7;
+    DateTime finalDate = DateTime(now.year - 1, now.month, dayDifference, time.getRealHour(), time.minute, 1);
     return tz.TZDateTime.from(finalDate, tz.local);
   }
 

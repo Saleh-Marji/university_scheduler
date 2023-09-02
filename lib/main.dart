@@ -8,6 +8,7 @@ import 'package:university_scheduler/screens/manual.dart';
 import 'package:university_scheduler/screens/schedule.dart';
 import 'package:university_scheduler/screens/settings.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:university_scheduler/test_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
