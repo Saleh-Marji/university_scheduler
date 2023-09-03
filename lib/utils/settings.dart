@@ -127,11 +127,9 @@ class Settings {
   static tz.TZDateTime _getDateTime(c.Time time, int day) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
-    // Calculate the date for the first occurrence of the desired weekday in the specified month
     tz.TZDateTime firstDayOfMonth = tz.TZDateTime(now.location, now.year - 1, now.month, 1, time.getRealHour(), time.minute, 1);
 
-    // Calculate the difference in days between the desired weekday and the first day of the month
-    int dayDifference = (day - firstDayOfMonth.weekday + 7) % 7;
+    int dayDifference = (day - firstDayOfMonth.weekday + 8) % 7;
     DateTime finalDate = DateTime(now.year - 1, now.month, dayDifference, time.getRealHour(), time.minute, 1);
     return tz.TZDateTime.from(finalDate, tz.local);
   }

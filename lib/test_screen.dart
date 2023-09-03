@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:university_scheduler/utils/settings.dart';
 import 'package:university_scheduler/widgets/common_widgets.dart';
+import 'modals/course.dart' as c;
 import 'package:timezone/timezone.dart' as tz;
 
 class TestScreen extends StatelessWidget {
@@ -20,6 +22,16 @@ class TestScreen extends StatelessWidget {
             ));
 
             await plugin.cancelAll();
+
+            var now = DateTime.now();
+
+            Settings.showNotification(
+              title: 'title',
+              body: 'body',
+              time: c.Time(now.hour, now.minute, c.TimeType.am),
+              daysOfTheWeek: [7],
+              plugin: plugin,
+            );
 
             // await plugin.zonedSchedule(
             //   1,
